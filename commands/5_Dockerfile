@@ -1,0 +1,39 @@
+####################
+#To build this Dockerfile please execute following command
+# docker build -t sharmankit23/demo-api:latest
+
+#To run the container
+# docker run -p 8080:8080 sharmankit23/demo-api
+
+#To take the terminal insid the container
+# docker run -it sharmankit23/demo-api sh
+
+
+####################
+
+#Base image
+FROM openjdk:8
+
+#Environment variable
+ENV WRK_DIR=/app/api
+
+#Setting default Working directory. This where CMD will be executed & default copy would take place.
+WORKDIR ${WRK_DIR}
+
+#Copy API jar into container(by defalt working directory)
+COPY build/libs/app.jar app.jar
+
+#Copy application propery file
+COPY src/main/resources/application.properties application.properties
+
+#TODO: Difference between ADD & COPY
+#ADD build/libs/demo-api.jar demo-api.jar
+
+#Exposing container port to connect to host port
+EXPOSE 8080
+
+#When the container is created using docker run or gets started using docker start, it runs this command.
+CMD ["java", "-jar", "app.jar"]
+
+#TODO: Difference between ENTRYPOUNT & CMD
+#ENTRYPOINT ["java", "-jar", "app.jar"]
